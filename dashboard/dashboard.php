@@ -10,5 +10,5 @@ if(!isset($_SESSION['admin'])) {
 <!-- Check request -->
 <!-- Contents -->
 <?php
-include 'include/footer.php'
+include 'include/footer.php';
 ?>
