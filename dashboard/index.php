@@ -7,7 +7,6 @@ if (isset($_SESSION['admin'])) {
   exit();
 }
 ?>
-<!-- Check for requests -->
 
 <div class="mt-3 accordion mx-auto text-center col-sm-9 col-md-6 col-lg-5 col-xl-4" id="accordionForm">
   <div class="accordion-item">
@@ -29,7 +28,8 @@ if (isset($_SESSION['admin'])) {
               <input autocomplete="current-password" type="password" class="form-control" name="password" id="old-password" placeholder="Password">
               <label for="old-password">* Password</label>
             </div>
-            <div id="signin-validation" class="text-uppercase"></div>
+            <div id="signin-validation" class="text-uppercase">
+            </div>
             <button class="btn btn-success d-grid col-7 mx-auto" type="button" onclick="handleSignin(event)">Login</button>
           </fieldset>
         </form>
@@ -72,7 +72,7 @@ if (isset($_SESSION['admin'])) {
   </div>
 </div>
 <script>
-  "use strict";
+  "use strict"
   const handleSignin = (event) => {
     event.preventDefault()
     const form = document.getElementById('signinForm')
@@ -83,15 +83,16 @@ if (isset($_SESSION['admin'])) {
         validation += `* ${pair[0]} must not be empty<br>`
       }
     }
-    document.getElementById("signin-validation").innerHTML = `
-    <div class="alert alert-danger d-flex align-items-center" role="alert">
-    <div>${validation}</div></div>
-    `
     if (validation === "") {
-      fetch('/signin.php', {
+      fetch('/index.php', {
         method: 'POST',
         body: formData
       }).then(res => console.log(res.json))
+    } else {
+      document.getElementById("signin-validation").innerHTML = `
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+        <div>${validation}</div></div>
+      `
     }
   }
   const handleSignup = (event) => {
@@ -107,18 +108,45 @@ if (isset($_SESSION['admin'])) {
     if (formData.get('password') !== formData.get('confirm_password')) {
       validation += `* confirmed password is not same as password<br>`
     }
-    document.getElementById("signup-validation").innerHTML = `
-    <div class="alert alert-danger d-flex align-items-center" role="alert">
-    <div>${validation}</div></div>
-    `
+
     if (validation === "") {
       fetch('/signup.php', {
         method: 'POST',
         body: formData
       }).then(res => console.log(res.json))
+    } else {
+      document.getElementById("signup-validation").innerHTML = `
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+        <div>${validation}</div></div>
+      `
     }
   }
 </script>
 <?php
+// signin request not working
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  echo "$username";
+  if (empty($username) || empty($password)) {
+    $message = '<div class="alert alert-danger">Please enter data</div>';
+  } else {
+    $query = 'SELECT * FROM admins WHERE admin_username = :username AND admin_password = :password';
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':password', $password);
+    $stmt->execute();
+    $count = $stmt->rowCount();
+    if ($count > 0) {
+      $_SESSION['admin'] = $username;
+      header('Location:dashboard.php');
+      exit();
+    } else {
+      $message = '<div class="alert alert-danger">Data doesnt match</div>';
+    }
+  }
+  if (isset($message)) echo $message;
+}
+
 include '../include/footer.php';
 ?>
