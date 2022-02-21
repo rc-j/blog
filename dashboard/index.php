@@ -1,6 +1,30 @@
 <?php
 session_start();
 include '../include/connection.php';
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  if (empty($username) || empty($password)) {
+    $message = '<div class="alert alert-danger">Please enter data</div>';
+  } else {
+    $count = 0;
+    /* $query = 'SELECT * FROM admins WHERE admin_username = :username AND admin_password = :password';
+      $stmt = $db->prepare($query);
+      $stmt->bindParam(':username', $username);
+      $stmt->bindParam(':password', $password);
+      $stmt->execute();
+      $count = $stmt->rowCount(); */
+    if ($count > 0) {
+      $_SESSION['admin'] = $username;
+      header('Location:dashboard.php');
+      exit();
+    } else {
+      $message = '<div class="alert alert-danger">Data doesnt match</div>';
+      echo $message;
+      exit();
+    }
+  }
+}
 include '../include/header.php';
 if (isset($_SESSION['admin'])) {
   header('Location: dashboard.php');
@@ -84,10 +108,11 @@ if (isset($_SESSION['admin'])) {
       }
     }
     if (validation === "") {
-      fetch('/index.php', {
-        method: 'POST',
-        body: formData
-      }).then(res => console.log(res.json))
+      fetch('/dashboard/index.php', {
+          method: 'POST',
+          body: formData
+        }).then(res => res.text())
+        .then(data => document.getElementById("signin-validation").innerHTML = data)
     } else {
       document.getElementById("signin-validation").innerHTML = `
         <div class="alert alert-danger d-flex align-items-center" role="alert">
@@ -110,7 +135,7 @@ if (isset($_SESSION['admin'])) {
     }
 
     if (validation === "") {
-      fetch('/signup.php', {
+      fetch('/dashboard.php', {
         method: 'POST',
         body: formData
       }).then(res => console.log(res.json))
@@ -123,30 +148,5 @@ if (isset($_SESSION['admin'])) {
   }
 </script>
 <?php
-// signin request not working
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
-  echo "$username";
-  if (empty($username) || empty($password)) {
-    $message = '<div class="alert alert-danger">Please enter data</div>';
-  } else {
-    $query = 'SELECT * FROM admins WHERE admin_username = :username AND admin_password = :password';
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':username', $username);
-    $stmt->bindParam(':password', $password);
-    $stmt->execute();
-    $count = $stmt->rowCount();
-    if ($count > 0) {
-      $_SESSION['admin'] = $username;
-      header('Location:dashboard.php');
-      exit();
-    } else {
-      $message = '<div class="alert alert-danger">Data doesnt match</div>';
-    }
-  }
-  if (isset($message)) echo $message;
-}
-
 include '../include/footer.php';
 ?>

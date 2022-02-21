@@ -1,11 +1,11 @@
 <?php
 session_start();
 include 'include/connection.php';
-include 'include/header.php';
-if(!isset($_SESSION['admin'])) {
+if (!isset($_SESSION['admin'])) {
     header('Location: index.php');
     exit();
 }
+include 'include/header.php';
 ?>
 <!-- Check request -->
 <!-- Contents -->
