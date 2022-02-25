@@ -8,6 +8,7 @@ if (!isset($_SESSION['admin'])) {
 include 'include/header.php';
 ?>
 <!-- Check request -->
+<h2>Welcome to dashboard</h2>
 <!-- Contents -->
 <?php
 include 'include/footer.php';

@@ -1,8 +1,8 @@
 <?php
 // Database Connection Parameters
-$dsn = 'mysql:host=localhost;dbname=blog; charset=UTF8';
-$user = 'prasiddha';
-$pass = '1234';
+$dsn = 'mysql:host=localhost;dbname=mini_facebook; charset=UTF8';
+$user = 'root';
+$pass = '';
 
 // Try To Connect
 try {

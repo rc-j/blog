@@ -8,16 +8,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $message = '<div class="alert alert-danger">Please enter data</div>';
   } else {
     $count = 0;
-    /* $query = 'SELECT * FROM admins WHERE admin_username = :username AND admin_password = :password';
+     $query = 'SELECT * FROM admins WHERE username = :username AND password = :password';
       $stmt = $db->prepare($query);
       $stmt->bindParam(':username', $username);
       $stmt->bindParam(':password', $password);
       $stmt->execute();
-      $count = $stmt->rowCount(); */
+      $count = $stmt->rowCount(); 
     if ($count > 0) {
-      $_SESSION['admin'] = $username;
-      header('Location:dashboard.php');
+      $message = '<div class="alert alert-success">You are logged in.</div>';
+      echo $message;
       exit();
+      // $_SESSION['admin'] = $username;
+      header('Location:dashboard.php');
+      // exit();
     } else {
       $message = '<div class="alert alert-danger">Data doesnt match</div>';
       echo $message;
@@ -108,7 +111,7 @@ if (isset($_SESSION['admin'])) {
       }
     }
     if (validation === "") {
-      fetch('/dashboard/index.php', {
+      fetch('index.php', {
           method: 'POST',
           body: formData
         }).then(res => res.text())
