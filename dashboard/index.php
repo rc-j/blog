@@ -2,27 +2,24 @@
 session_start();
 include '../include/connection.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
+  $username = $_POST['Username'];
+  $password = $_POST['Password'];
   if (empty($username) || empty($password)) {
     $message = '<div class="alert alert-danger">Please enter data</div>';
+    exit();
   } else {
     $count = 0;
-     $query = 'SELECT * FROM admins WHERE username = :username AND password = :password';
-      $stmt = $db->prepare($query);
-      $stmt->bindParam(':username', $username);
-      $stmt->bindParam(':password', $password);
-      $stmt->execute();
-      $count = $stmt->rowCount(); 
+    $query = 'SELECT * FROM admins WHERE username = :username AND password = :password';
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':password', $password);
+    $stmt->execute();
+    $count = $stmt->rowCount();
     if ($count > 0) {
-      $message = '<div class="alert alert-success">You are logged in.</div>';
-      echo $message;
+      $_SESSION['admin'] = $username;
       exit();
-      // $_SESSION['admin'] = $username;
-      header('Location:dashboard.php');
-      // exit();
     } else {
-      $message = '<div class="alert alert-danger">Data doesnt match</div>';
+      $message = '<div class="alert alert-danger">Data does not match</div>';
       echo $message;
       exit();
     }
@@ -34,7 +31,7 @@ if (isset($_SESSION['admin'])) {
   exit();
 }
 ?>
-
+<a href="../index.php" class="btn btn-info">Home</a>
 <div class="mt-3 accordion mx-auto text-center col-sm-9 col-md-6 col-lg-5 col-xl-4" id="accordionForm">
   <div class="accordion-item">
     <h2 class="accordion-header">
@@ -48,16 +45,15 @@ if (isset($_SESSION['admin'])) {
           <fieldset>
             <legend class="mb-3">Sign in</legend>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="old-username" name="username" placeholder="Username">
+              <input type="text" class="form-control" id="old-username" name="Username" placeholder="username">
               <label for="old-username">* Username</label>
             </div>
             <div class="form-floating mb-3">
-              <input autocomplete="current-password" type="password" class="form-control" name="password" id="old-password" placeholder="Password">
+              <input autocomplete="current-password" type="password" class="form-control" name="Password" id="old-password" placeholder="Password">
               <label for="old-password">* Password</label>
             </div>
-            <div id="signin-validation" class="text-uppercase">
-            </div>
-            <button class="btn btn-success d-grid col-7 mx-auto" type="button" onclick="handleSignin(event)">Login</button>
+            <div id="signin-validation"></div>
+            <button class="btn btn-success d-grid col-7 mx-auto" type="submit" onclick="handleSignin(event)">Login</button>
           </fieldset>
         </form>
       </div>
@@ -75,22 +71,22 @@ if (isset($_SESSION['admin'])) {
           <fieldset>
             <legend class="mb-3">Sign up</legend>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="new-username" name="username" placeholder="16_chars_max.">
+              <input type="text" class="form-control" id="new-username" name="Username" placeholder="16_chars_max.">
               <label for="new-username">* Choose Username</label>
             </div>
             <div class="form-floating mb-3">
-              <input type="file" class="form-control" id="admin-pic" name="photo" placeholder="Admin-Pic">
+              <input type="file" class="form-control" id="admin-pic" name="Photo" placeholder="Admin-Pic">
               <label for="admin-pic">Select your photo</label>
             </div>
             <div class="form-floating mb-3">
-              <input autocomplete="new-password" type="password" name="password" class="form-control" id="new-password" placeholder="New Password">
+              <input autocomplete="new-password" type="password" name="Password" class="form-control" id="new-password" placeholder="New Password">
               <label for="new-password">* New Password</label>
             </div>
             <div class="form-floating mb-3">
-              <input autocomplete="new-password" type="password" name="confirm_password" class="form-control" id="new-password2" placeholder="New Password">
+              <input autocomplete="new-password" type="password" name="Confirm_password" class="form-control" id="new-password2" placeholder="New Password">
               <label for="new-password2">* Confirm Password</label>
             </div>
-            <div id="signup-validation" class="text-uppercase"></div>
+            <div id="signup-validation"></div>
             <button class="btn btn-primary d-grid col-7 mx-auto" type="button" onclick="handleSignup(event)">Register</button>
           </fieldset>
         </form>
@@ -115,7 +111,10 @@ if (isset($_SESSION['admin'])) {
           method: 'POST',
           body: formData
         }).then(res => res.text())
-        .then(data => document.getElementById("signin-validation").innerHTML = data)
+        .then(msg => {
+          if (msg === "") window.location.replace("dashboard.php")
+          else document.getElementById("signin-validation").innerHTML = msg
+        })
     } else {
       document.getElementById("signin-validation").innerHTML = `
         <div class="alert alert-danger d-flex align-items-center" role="alert">
@@ -138,10 +137,10 @@ if (isset($_SESSION['admin'])) {
     }
 
     if (validation === "") {
-      fetch('/dashboard.php', {
+      fetch('dashboard.php', {
         method: 'POST',
         body: formData
-      }).then(res => console.log(res.json))
+      }).then(res => console.log(res.text()))
     } else {
       document.getElementById("signup-validation").innerHTML = `
         <div class="alert alert-danger d-flex align-items-center" role="alert">
