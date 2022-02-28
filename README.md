@@ -5,5 +5,5 @@
 separate dashboard and homepage
 same header and footer
 mysql setup
-signup signin message forms
+signup signin database-entry
 ```

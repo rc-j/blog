@@ -3,7 +3,6 @@
 $dsn = 'mysql:host=localhost;dbname=blog; charset=UTF8';
 $user = 'prasiddha';
 $pass = '1234';
-
 // Try To Connect
 try {
   // Create Connection

@@ -1,13 +1,12 @@
-CREATE DATABASE blog;
-GRANT ALL PRIVILEGES ON blog.* to 'prasiddha'@'localhost';
-FLUSH PRIVILEGES;
-USE blog;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 CREATE TABLE `admins` (
   `admin_type` tinyint(1) NOT NULL DEFAULT 0,
   `username` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(72) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `admin_photo` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `admin_photo` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `categories` (
@@ -54,5 +53,4 @@ ALTER TABLE `messages`
 
 ALTER TABLE `posts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 COMMIT;
