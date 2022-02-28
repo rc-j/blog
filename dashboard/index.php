@@ -76,7 +76,7 @@ if (isset($_SESSION['admin'])) {
             </div>
             <div class="form-floating mb-3">
               <input type="file" class="form-control" id="admin-pic" name="Photo" placeholder="Admin-Pic">
-              <label for="admin-pic">Select your photo</label>
+              <label for="admin-pic">Select your photo (Less than 2 MB)</label>
             </div>
             <div class="form-floating mb-3">
               <input autocomplete="new-password" type="password" name="Password" class="form-control" id="new-password" placeholder="New Password">
@@ -87,7 +87,7 @@ if (isset($_SESSION['admin'])) {
               <label for="new-password2">* Confirm Password</label>
             </div>
             <div id="signup-validation"></div>
-            <button class="btn btn-primary d-grid col-7 mx-auto" type="button" onclick="handleSignup(event)">Register</button>
+            <button class="btn btn-primary d-grid col-7 mx-auto" type="submit" onclick="handleSignup(event)">Register</button>
           </fieldset>
         </form>
       </div>
@@ -117,8 +117,7 @@ if (isset($_SESSION['admin'])) {
         })
     } else {
       document.getElementById("signin-validation").innerHTML = `
-        <div class="alert alert-danger d-flex align-items-center" role="alert">
-        <div>${validation}</div></div>
+        <div class="alert alert-danger">${validation}</div>
       `
     }
   }
@@ -132,19 +131,21 @@ if (isset($_SESSION['admin'])) {
         validation += `* ${pair[0]} must not be empty<br>`
       }
     }
-    if (formData.get('password') !== formData.get('confirm_password')) {
-      validation += `* confirmed password is not same as password<br>`
+    if (formData.get('Password') !== formData.get('Confirm_password')) {
+      validation += `* Confirmed password is not same as password<br>`
     }
-
     if (validation === "") {
       fetch('dashboard.php', {
-        method: 'POST',
-        body: formData
-      }).then(res => console.log(res.text()))
+          method: 'POST',
+          body: formData
+        }).then(res => res.text())
+        .then(msg => {
+          if (msg === "") window.location.replace("dashboard.php")
+          else document.getElementById("signup-validation").innerHTML = msg
+        })
     } else {
       document.getElementById("signup-validation").innerHTML = `
-        <div class="alert alert-danger d-flex align-items-center" role="alert">
-        <div>${validation}</div></div>
+        <div class="alert alert-danger">${validation}</div>
       `
     }
   }
