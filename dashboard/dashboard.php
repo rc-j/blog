@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../include/connection.php';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['Username'];
     $password = $_POST['Password'];
@@ -46,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['admin'] = $username;
         exit();
     } else {
-        move_uploaded_file($image_temp, realpath(dirname(getcwd())) . '/assets/' . $fileName);
+        move_uploaded_file($image_temp, realpath(dirname(getcwd())) . '/assets/admins/' . $fileName);
         $query = 'INSERT INTO admins(admin_type, username, password, admin_photo) VALUES (:admin_type,:username,:password,:admin_photo)';
         $stmt = $db->prepare($query);
         $stmt->bindParam(':admin_type', $adminType);
@@ -58,62 +59,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 }
+
 if (!isset($_SESSION['admin'])) {
     header('Location: index.php');
     exit();
 }
-include '../include/header.php';
-$query = 'SELECT admin_photo FROM admins WHERE username = :username';
-$stmt = $db->prepare($query);
-$stmt->bindParam(':username', $_SESSION['admin']);
-$stmt->execute();
-$row = $stmt->fetch();
-?>
-<div class="container-fluid p-0">
-    <div class="row">
-        <div class="col-md-3 col-xl-2">
-            <nav class="navbar navbar-expand-md navbar-dark bg-dark text-light">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dashmenu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="dashmenu" style="height: 670px;">
-                    <ul class="ms-2 navbar-nav flex-column">
-                        <img class="ms-2 navbar-brand img-fluid rounded-circle" src="../assets/<?= $row['admin_photo']; ?>" alt="Admin Photo">
-                        <li class="fs-3 text-center">Dashboard</li>
-                        <hr>
-                        <li class="nav-item" data-bs-toggle="collapse" data-bs-target="#subDashMenu">
-                            <a class="nav-link dropdown-toggle" href="#" role="button">
-                                Posts
-                            </a>
-                        </li>
-                        <ul class="collapse list-unstyled nav-item" id="subDashMenu">
-                            <li><a class="nav-link" href="#">New Post</a></li>
-                            <li><a class="nav-link" href="#">My Posts</a></li>
-                        </ul>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Messages</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Settings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Visit site</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-        <div class="col-2">
-            <?php echo $_SESSION['admin']; ?>
-            <a href="logout.php" class="btn btn-danger">Logout</a>
 
+include '../include/header.php';
+
+?>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="position-fixed col-lg-3 col-xl-2 p-0">
+            <?php
+            include '../include/sidebar.php';
+            ?>
+        </div>
+        <div style="position: absolute; z-index: -1;" class="offset-lg-3 offset-xl-2 col-lg-9 col-xl-10 p-0">
+            <?php
+            include '../include/posts.php';
+            ?>
         </div>
     </div>
 </div>
-
+<script>
+    "use strict"
+    window.onload = (event) => {
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+        var toastList = toastElList.map(function(toastEl) {
+            return new bootstrap.Toast(toastEl).show()
+        })
+    }
+</script>
+<div class="toast-container position-absolute bottom-0 end-0 p-3">
+    <div class="bg-success toast" id="welcome" role="alert" data-bs-delay="3000">
+        <div class="toast-header">
+            <strong class="me-auto">Mini-facebook</strong>
+            &nbsp;<small>just now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body">
+            Welcome, <?= $_SESSION['admin'] ?>!
+        </div>
+    </div>
+</div>
 <?php
 include '../include/footer.php';
-?> */
+?>
