@@ -31,7 +31,7 @@ if (isset($_SESSION['admin'])) {
 }
 include '../include/header.php';
 ?>
-<a href="../index.php" class="btn btn-info">Home</a>
+<a href="../index.php" class="btn btn-info">Goto Homepage</a>
 <div class="mt-3 accordion mx-auto text-center col-sm-9 col-md-6 col-lg-5 col-xl-4" id="accordionForm">
   <div class="accordion-item">
     <h2 class="accordion-header">

@@ -1,7 +1,10 @@
 <?php
 session_start();
 include '../include/connection.php';
-
+if (!isset($_SESSION['admin'])) {
+    header('Location: index.php');
+    exit();
+}
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['Username'];
     $password = $_POST['Password'];
@@ -60,11 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-if (!isset($_SESSION['admin'])) {
-    header('Location: index.php');
-    exit();
-}
-
 include '../include/header.php';
 
 ?>
@@ -73,7 +71,7 @@ include '../include/header.php';
     <div class="row">
         <div class="position-fixed col-lg-3 col-xl-2 p-0">
             <?php
-            include '../include/sidebar.php';
+            include '../include/adminSidebar.php';
             ?>
         </div>
         <div style="position: absolute; z-index: -1;" class="offset-lg-3 offset-xl-2 col-lg-9 col-xl-10 p-0">
