@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':post_id', $postID);
     $stmt->bindParam(':comment', $comment);
     $stmt->execute();
-    echo '<div class="alert alert-success">Comment added successfully</div>';
+    echo '<span class="text-capitalize fs-5">' . $_SESSION['admin'] . '</span> says: <strong class="fs-4">' . $comment . '</strong><span class="d-flex justify-content-end">just now</span>';
     exit();
 }
 include '../include/header.php';
@@ -43,10 +43,10 @@ if (!isset($_GET['post_id'])) {
             ?>
 
             <div class="card">
-                <img src="/project/assets/<?= $row['picture']; ?>" class="card-img-top" alt="Post Picture">
+                <img src="/project/assets/<?= $row['picture']; ?>" class="card-img-top" alt="Picture not available">
                 <div class="card-body">
                     <h5 class="card-title text-center fs-3"><?= $row['title']; ?></h5>
-                    <p class="card-text fs-5"> <?= $row['content']; ?>
+                    <p class="card-text fs-5"> <?= nl2br($row['content']) ?>
                     </p>
                 </div>
                 <?php

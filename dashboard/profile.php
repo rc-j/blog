@@ -24,6 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo '<div class="alert alert-danger">Username already exists</div>';
         exit();
     }
+    $query = 'SELECT admin_photo FROM admins WHERE username = :username';
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':username', $_SESSION['admin']);
+    $stmt->execute();
+    $row = $stmt->fetch();
     $userImage = $_FILES['Photo'];
     $image_name = $userImage['name']; //filename before upload: example.jpg
     $image_type = $userImage['type']; // eg: image/jpeg
@@ -50,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     } else {
         move_uploaded_file($image_temp, realpath(dirname(getcwd())) . '/assets/admins/' . $fileName);
+        unlink(realpath(dirname(getcwd())) . "/assets/admins/" . $row['admin_photo']);
         $query = 'UPDATE admins SET admin_type = :admintype, username = :username, password = :password, admin_photo = :adminphoto WHERE username = :oldUsername';
         $stmt = $db->prepare($query);
         $stmt->bindParam(':admintype', $adminType);

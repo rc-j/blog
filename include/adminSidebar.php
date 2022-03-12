@@ -25,12 +25,17 @@ $row = $stmt->fetch();
                     Profile</a>
             </li>
             <li class="nav-item ms-3">
+                <a class="nav-link" href="editCategory.php">
+                    <i class="fa-solid fa-tags me-2"></i>
+                    Categories</a>
+            </li>
+            <li class="nav-item ms-3">
                 <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#subSidebar" href="#">
                     <i class="fa-solid fa-pen me-2"></i>
                     Posts</a>
             </li>
             <ul class="collapse" id="subSidebar">
-                <li><a class="nav-link" href="#"><i class="fa-solid fa-pen-to-square me-2"></i>Create new</a></li>
+                <li><a class="nav-link" href="create.php"><i class="fa-solid fa-pen-to-square me-2"></i>Create new</a></li>
                 <li><a class="nav-link" href="#"><i class="fa-solid fa-table-cells-large me-2"></i>My Posts</a></li>
             </ul>
             <li class="nav-item ms-3">

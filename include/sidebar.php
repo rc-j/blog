@@ -1,6 +1,6 @@
 <?php
 include '../include/connection.php';
-$query = 'SELECT category_name FROM categories ORDER BY category_id';
+$query = 'SELECT category_name FROM categories ORDER BY category_id DESC';
 ?>
 <div class="position-fixed col-lg-3 col-xl-2 p-0">
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
@@ -21,7 +21,7 @@ $query = 'SELECT category_name FROM categories ORDER BY category_id';
                 ?>
                     <li class="nav-item ms-3">
                         <a class="nav-link" href="/project/dashboard/categories.php?category=<?= $row['category_name']; ?>">
-                            <?= $row['category_name'] ?>
+                            <?= $row['category_name']; ?>
                         </a>
                     </li>
                 <?php

@@ -2,8 +2,8 @@
 session_start();
 include '../include/connection.php';
 include '../include/header.php';
-$category = $_GET['category'];
-if (!isset($_GET['category'])) {
+$category = $_GET['Category'];
+if (!isset($_GET['Category'])) {
     header('Location: index.php');
     exit();
 }

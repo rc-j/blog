@@ -1,10 +1,6 @@
 <?php
 session_start();
 include '../include/connection.php';
-if (!isset($_SESSION['admin'])) {
-    header('Location: index.php');
-    exit();
-}
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['Username'];
     $password = $_POST['Password'];
@@ -62,7 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 }
-
+if (!isset($_SESSION['admin'])) {
+    header('Location: index.php');
+    exit();
+}
 include '../include/header.php';
 
 ?>

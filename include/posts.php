@@ -15,7 +15,7 @@ while ($row = $stmt->fetch()) {
 ?>
     <div class="col-md-6">
         <div class="card">
-            <img src="/project/assets/<?= $row['picture']; ?>" class="card-img-top" alt="...">
+            <img src="/project/assets/<?= $row['picture']; ?>" class="card-img-top" alt="No Picture">
             <div class="card-body">
                 <h5 class="card-title"><?= $row['title']; ?></h5>
                 <p class="card-text"> <?= substr(nl2br($row['content']), 0, 269) . ' ...'; ?>
