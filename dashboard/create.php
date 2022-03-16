@@ -60,7 +60,6 @@ include '../include/header.php';
             $query = 'SELECT * FROM categories ORDER BY category_id';
             ?>
         </div>
-
         <div class="col-lg-6">
             <form id="createPost">
                 <fieldset>
@@ -71,7 +70,7 @@ include '../include/header.php';
                             <?php
                             foreach ($db->query($query) as $row) {
                             ?>
-                                <option value="<?= $row['category_id'] ?>"><?= $row['category_name'] ?></option>
+                                <option value="<?= $row['category_name'] ?>"><?= $row['category_name'] ?></option>
                             <?php
                             }
                             ?>
@@ -92,7 +91,8 @@ include '../include/header.php';
                         <label for="post_text">* Content:</label>
                         <textarea class="form-control" id="post_text" name="Content" rows="12"></textarea>
                     </div>
-                    <div id="createPost-validation"></div>
+                    <div id="createPost-validation">
+                    </div>
                     <button type="submit" class="btn btn-primary d-grid col-7 mx-auto" onclick="handlePost(event)">Publish</button>
                 </fieldset>
             </form>

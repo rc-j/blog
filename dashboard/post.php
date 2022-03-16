@@ -33,7 +33,7 @@ if (!isset($_GET['post_id'])) {
             ?>
         </div>
 
-        <div class="col-auto">
+        <div class="col-lg-9 col-xl-10">
             <?php
             // Get Category Name
             $query = 'SELECT * FROM posts WHERE post_id = ?';

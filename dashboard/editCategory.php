@@ -26,7 +26,7 @@ include '../include/header.php';
             ?>
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-auto">
             <button class="btn btn-warning" data-bs-toggle="collapse" data-bs-target="#categoryInput">New Category</button>
             <div class="collapse" id="categoryInput">
                 <input type="text" class="form-control" id="category">
