@@ -1,33 +1,32 @@
-<?php
-// Set Current Page Variable
-isset($_GET['page']) ? $page = $_GET['page'] : $page = 1;
-// Start & Limit Of Retrieved Date
-$limit = 6;
-$start = ($page - 1) * $limit;
-// Get Total Pages
-$stmt = $db->query('SELECT * FROM posts');
-$totalPages = ceil($stmt->rowCount() / $limit);
-// Fetch Categories
-$stmt = $db->query('SELECT * FROM posts ORDER BY post_id DESC LIMIT ' . $start . ', ' . $limit);
-?>
-<?php
-while ($row = $stmt->fetch()) {
-?>
-    <div class="col-md-6">
-        <div class="card">
-            <img src="/project/assets/<?= $row['picture']; ?>" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title"><?= $row['title']; ?></h5>
-                <p class="card-text"> <?= substr(nl2br($row['content']), 0, 269) . ' ...'; ?>
-                </p>
-                <a href="/project/dashboard/post.php?post_id=<?= $row['post_id']; ?>" class="btn btn-secondary">See more...</a>
+<div class="row">
+    <?php
+    // Set Current Page Variable
+    isset($_GET['page']) ? $page = $_GET['page'] : $page = 1;
+    // Start & Limit Of Retrieved Date
+    $limit = 6;
+    $start = ($page - 1) * $limit;
+    // Get Total Pages
+    $stmt = $db->query('SELECT * FROM posts');
+    $totalPages = ceil($stmt->rowCount() / $limit);
+    // Fetch Categories
+    $stmt = $db->query('SELECT * FROM posts ORDER BY post_id DESC LIMIT ' . $start . ', ' . $limit);
+    while ($row = $stmt->fetch()) {
+    ?>
+        <div class="col-6">
+            <div class="card">
+                <img src="<?php echo realpath(dirname(getcwd()) . '/assets/' . $row['picture']); ?>" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title"><?= $row['title']; ?></h5>
+                    <p class="card-text"> <?= substr(nl2br($row['content']), 0, 269) . ' ...'; ?>
+                    </p>
+                    <a href="<?php echo realpath(dirname(getcwd()) . '/dashboard/post.php?post_id=' . $row['post_id']); ?>" class="btn btn-info">See more...</a>
+                </div>
             </div>
         </div>
-    </div>
-<?php
-}
-?>
-
+    <?php
+    }
+    ?>
+</div>
 <!-- Pagination -->
 <div class="row">
     <div class="col">

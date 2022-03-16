@@ -127,7 +127,7 @@ include '../include/header.php';
     const formData = new FormData(form)
     let validation = ""
     for (let pair of formData.entries()) {
-      if (pair[0] !== "photo" && pair[1] == "") {
+      if (pair[1] === "") {
         validation += `* ${pair[0]} must not be empty<br>`
       }
     }

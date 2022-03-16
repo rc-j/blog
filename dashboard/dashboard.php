@@ -1,10 +1,6 @@
 <?php
 session_start();
 include '../include/connection.php';
-if (!isset($_SESSION['admin'])) {
-    header('Location: index.php');
-    exit();
-}
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['Username'];
     $password = $_POST['Password'];
@@ -62,7 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 }
-
+if (!isset($_SESSION['admin'])) {
+    header('Location: index.php');
+    exit();
+}
 include '../include/header.php';
 
 ?>
@@ -91,9 +90,9 @@ include '../include/header.php';
     }
 </script>
 <div class="toast-container position-absolute bottom-0 end-0 p-3">
-    <div class="bg-success toast" id="welcome" role="alert" data-bs-delay="3000">
+    <div class="bg-primary toast" id="welcome" role="alert" data-bs-delay="3000">
         <div class="toast-header">
-            <strong class="me-auto">Mini-facebook</strong>
+            <strong class="me-auto">Users Blogging Forum</strong>
             &nbsp;<small>just now</small>
             <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
         </div>

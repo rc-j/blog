@@ -1,6 +1,5 @@
 <?php
-include '../include/connection.php';
-$query = 'SELECT category_name FROM categories ORDER BY category_id';
+$query = 'SELECT category_name FROM categories ORDER BY category_id DESC';
 ?>
 <div class="position-fixed col-lg-3 col-xl-2 p-0">
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
@@ -10,7 +9,7 @@ $query = 'SELECT category_name FROM categories ORDER BY category_id';
         <div class="collapse navbar-collapse" id="sidebar">
             <ul class="navbar-nav flex-column align-self-start" style="height: 100vh; overflow: auto;">
                 <li class="nav-item ms-3">
-                    <a href="/project/dashboard/" class="nav-link me-5" href="#">
+                    <a href="<?php echo $_SERVER['SCRIPT_URI'] . 'dashboard/'; ?>" class="nav-link me-5" href="#">
                         Login <i class="fa-solid fa-right-to-bracket"></i></a>
                 </li>
                 <li class="nav-item ms-3 mt-5 text-secondary">
@@ -20,8 +19,8 @@ $query = 'SELECT category_name FROM categories ORDER BY category_id';
                 foreach ($db->query($query) as $row) {
                 ?>
                     <li class="nav-item ms-3">
-                        <a class="nav-link" href="/project/dashboard/categories.php?category=<?= $row['category_name']; ?>">
-                            <?= $row['category_name'] ?>
+                        <a class="nav-link" href="<?php echo  $_SERVER['REQUEST_URI'] . 'dashboard/categories.php?category=' . $row['category_name']; ?>">
+                            <?= $row['category_name']; ?>
                         </a>
                     </li>
                 <?php
