@@ -23,7 +23,7 @@ if (!isset($_GET['post_id'])) {
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-3 col-xl-2 p-0">
+        <div class="position-fixed col-lg-3 col-xl-2 p-0">
             <?php
             if (isset($_SESSION['admin'])) {
                 include '../include/adminSidebar.php';
@@ -33,7 +33,7 @@ if (!isset($_GET['post_id'])) {
             ?>
         </div>
 
-        <div class="col-lg-9 col-xl-10">
+        <div style="position: absolute; z-index: -1;" class="offset-lg-3 offset-xl-2 col-lg-9 col-xl-10 p-0">
             <?php
             // Get Category Name
             $query = 'SELECT * FROM posts WHERE post_id = ?';
@@ -84,6 +84,7 @@ if (!isset($_GET['post_id'])) {
         if (comment !== "") {
             formData.append("Comment", comment)
             formData.append("postID", postID)
+            console.log(comment, postID)
             fetch('post.php', {
                     method: 'POST',
                     body: formData

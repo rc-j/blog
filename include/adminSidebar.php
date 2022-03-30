@@ -39,11 +39,11 @@ $row = $stmt->fetch();
                 <li><a class="nav-link" href="#"><i class="fa-solid fa-table-cells-large me-2"></i>My Posts</a></li>
             </ul>
             <li class="nav-item ms-3">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="messages.php">
                     <i class="fa-solid fa-message me-2"></i>Messages</a>
             </li>
             <li class="nav-item ms-3">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="users.php">
                     <i class="fa-solid fa-user-group me-2"></i>All users</a>
             </li>
             <li class="nav-item ms-3 mb-5">

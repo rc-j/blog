@@ -37,9 +37,11 @@ include '../include/header.php';
                 All categories:
                 <?php
                 $query = 'SELECT category_name FROM categories ORDER BY category_id DESC';
+                $colors = ['dark', 'info', 'secondary', 'success', 'danger', 'primary'];
+                $count = 1;
                 foreach ($db->query($query) as $row) {
                 ?>
-                    <a class="bg-dark text-light list-group-item list-group-item-action" href="/project/dashboard/categories.php?category=<?= $row['category_name']; ?>">
+                    <a class="bg-<?= $colors[$count++ % 6] ?> text-light list-group-item list-group-item-action" href="<?= '/project/dashboard/categories.php?category=' . $row['category_name']; ?>">
                         <?= $row['category_name']; ?>
                     </a>
                 <?php

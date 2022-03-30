@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo '<div class="alert alert-danger">Photo must be less than 2MB<br>jpg, jpeg or png are only allowed.</div>';
         exit();
     } elseif (empty($image_name)) {
-        $query = 'INSERT INTO posts(author, category, title, content) VALUES (:post_id, :author, :category, :title, :content)';
+        $query = 'INSERT INTO posts(author, category, title, content) VALUES (:author, :category, :title, :content)';
         $stmt = $db->prepare($query);
         $stmt->bindParam(':author', $_SESSION['admin']);
         $stmt->bindParam(':category', $category);
