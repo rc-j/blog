@@ -6,7 +6,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = $_POST['Title'];
     $photo = $_FILES['Photo'];
     $content = $_POST['Content'];
-    $confirmPassword = $_POST['Confirm_password'];
     if (empty($category) || empty($title) || empty($content)) {
         echo '<div class="alert alert-danger">Field with * is required.</div>';
         exit();
