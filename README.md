@@ -10,5 +10,5 @@ perform initial migration from blog.sql
 
 ##### Working on:
 ```
-messages in users page
+delete posts in myPosts.php
 ```

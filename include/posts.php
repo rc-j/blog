@@ -8,7 +8,7 @@
     // Get Total Pages
     $stmt = $db->query('SELECT * FROM posts');
     $totalPages = ceil($stmt->rowCount() / $limit);
-    // Fetch Categories
+    // Fetch Posts
     $stmt = $db->query('SELECT * FROM posts ORDER BY post_id DESC LIMIT ' . $start . ', ' . $limit);
     while ($row = $stmt->fetch()) {
     ?>

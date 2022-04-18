@@ -1,10 +1,10 @@
 <?php
 session_start();
-include '../include/connection.php';
 if (!isset($_SESSION['admin'])) {
     header('Location: index.php');
     exit();
 }
+include '../include/connection.php';
 include '../include/header.php';
 ?>
 <div class="container-fluid">
@@ -17,19 +17,28 @@ include '../include/header.php';
         <div style="position: absolute; z-index: -1;" class="offset-lg-3 offset-xl-2 col-lg-9 col-xl-10 p-0">
             <ul class="list-group">
                 <?php
-                // Fetch messages
-                $adminType = 0;
-                $query = 'SELECT * FROM admins WHERE admin_type = :admin_type';
-                $stmt = $db->prepare($query);
-                $stmt->bindParam(':admin_type', $adminType);
-                $stmt->execute();
+                // Fetch users
+                isset($_GET['page']) ? $page = $_GET['page'] : $page = 1;
+                $limit = 6;
+                $start = ($page - 1) * $limit;
+                $query = 'SELECT * FROM admins LIMIT ' . $start . ', ' . $limit;
+                $stmt = $db->query($query);
+                $totalPages = ceil($stmt->rowCount() / $limit);
                 $colors = ['dark', 'secondary', 'success', 'danger', 'info', 'primary'];
                 $count = 1;
                 while ($row = $stmt->fetch()) {
                 ?>
-
                     <li class="list-group-item bg-<?= $colors[$count++ % 6] ?>"><?= $row['username'] . ' joined on ' . $row['joined_on']; ?>
-                        <?= $row['username'] != $_SESSION['admin'] ? '<a href="#" class="float-end btn btn-warning" data-bs-toggle="offcanvas" data-bs-whatever="' . $row['username'] . '" data-bs-target="#sendMessage">Send Message</a>' : '' ?>
+                        <?php
+                        echo $row['username'] != $_SESSION['admin'] ? '<a href="#" class="float-end btn btn-warning" data-bs-toggle="offcanvas" data-bs-whatever="' . $row['username'] . '" data-bs-target="#sendMessage">Send Message</a>' : '';
+                        $query = 'SELECT * FROM admins WHERE username = :username';
+                        $st = $db->prepare($query);
+                        $st->bindParam(':username', $_SESSION['admin']);
+                        $st->execute();
+                        if ($st->fetch()['admin_type'] == 1) {
+                            echo $row['admin_type'] == 0 ? '<i class="fa-solid fa-trash-can ms-3"></i>' : '';
+                        };
+                        ?>
                     </li>
                     <div class="offcanvas offcanvas-end" id="sendMessage">
                         <div class="offcanvas-header">
@@ -56,6 +65,25 @@ include '../include/header.php';
                 }
                 ?>
             </ul>
+            <div class="col">
+                <ul class="pagination d-flex justify-content-center mt-5">
+                    <li class="page-item <?= $page - 1 == 0 ? 'disabled' : ''; ?>">
+                        <a class="page-link" href="?page=<?= $page - 1; ?>">Previous</a>
+                    </li>
+                    <?php
+                    for ($i = 1; $i <= $totalPages; $i++) {
+                    ?>
+                        <li class="page-item <?= $page == $i ? 'active' : ''; ?>">
+                            <a class="page-link" href="?page=<?= $i; ?>"><?= $i; ?></a>
+                        </li>
+                    <?php
+                    } ?>
+                    <li class="page-item <?= $page + 1 > $totalPages ? 'disabled' : ''; ?>">
+                        <a class="page-link" href="?page=<?= $page + 1; ?>">Next</a>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
     <script>
