@@ -2,16 +2,18 @@
 session_start();
 include '../include/connection.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $postID = $_POST['postID'];
-    $comment = $_POST['Comment'];
-    $query = 'INSERT INTO comments(user_id, post_id, comment) VALUES (:user_id, :post_id, :comment)';
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':user_id', $_SESSION['admin']);
-    $stmt->bindParam(':post_id', $postID);
-    $stmt->bindParam(':comment', $comment);
-    $stmt->execute();
-    echo '<span class="text-capitalize fs-5">' . $_SESSION['admin'] . '</span> says: <strong class="fs-4">' . $comment . '</strong><span class="d-flex justify-content-end">just now</span>';
-    exit();
+    if (isset($_SESSION['admin'])) {
+        $postID = $_POST['postID'];
+        $comment = $_POST['Comment'];
+        $query = 'INSERT INTO comments(user_id, post_id, comment) VALUES (:user_id, :post_id, :comment)';
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':user_id', $_SESSION['admin']);
+        $stmt->bindParam(':post_id', $postID);
+        $stmt->bindParam(':comment', $comment);
+        $stmt->execute();
+        echo '<span class="text-capitalize fs-5">' . $_SESSION['admin'] . '</span> says: <strong class="fs-4">' . $comment . '</strong><span class="d-flex justify-content-end">just now</span>';
+        exit();
+    }
 }
 include '../include/header.php';
 $postID = $_GET['post_id'];
@@ -62,7 +64,7 @@ if (!isset($_GET['post_id'])) {
                 }
                 if (isset($_SESSION['admin'])) {
                 ?>
-                    <div id="comment-validation"></div>
+                    <div id="comment-validation" class="bg-secondary"></div>
                     <textarea placeholder="Add a comment... max. 500 characters" class="form-control" id="comment" rows="2" cols="45"></textarea>
                     <button type="button" onclick="handleComment(event)" value="<?= $_GET['post_id'] ?>" class="d-grid col-6 btn btn-primary mx-auto mt-2" id="commentButton">Add comment</button>
                 <?php
@@ -84,12 +86,11 @@ if (!isset($_GET['post_id'])) {
         if (comment !== "") {
             formData.append("Comment", comment)
             formData.append("postID", postID)
-            console.log(comment, postID)
             fetch('post.php', {
                     method: 'POST',
                     body: formData
                 }).then(res => res.text())
-                .then(msg => document.getElementById("comment-validation").innerHTML = msg)
+                .then(msg => document.getElementById("comment-validation").innerHTML += msg)
         } else {
             document.getElementById("comment-validation").innerHTML = `
         <div class="alert alert-danger">Comment is empty!</div>

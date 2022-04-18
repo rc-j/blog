@@ -3,6 +3,15 @@ session_start();
 include '../include/connection.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $category = $_POST['Category'];
+    //Check if category already exists
+    $query = 'SELECT category_name FROM categories WHERE category_name = :cN';
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':cN', $category);
+    $stmt->execute();
+    if ($stmt->rowCount() > 0) {
+        echo '<div class="alert alert-warning">Category ' . $category . ' already exists.</div>';
+        exit();
+    }
     $query = 'INSERT INTO categories(category_name, created_by) VALUES (:category_name, :created_by)';
     $stmt = $db->prepare($query);
     $stmt->bindParam(':category_name', $category);
@@ -27,11 +36,11 @@ include '../include/header.php';
         </div>
 
         <div class="col-auto">
-            <button class="btn btn-warning" data-bs-toggle="collapse" data-bs-target="#categoryInput">New Category</button>
+            <button class="btn btn-dark" data-bs-toggle="collapse" data-bs-target="#categoryInput">New Category</button>
             <div class="collapse" id="categoryInput">
-                <input type="text" class="form-control" id="category">
+                <input type="text" class="form-control mt-2" id="category">
                 <div id="category-validation"></div>
-                <button class="btn btn-primary d-grid col-7 mx-auto" type="submit" onclick="handleCategory(event)">Add category</button>
+                <button class="btn btn-primary d-grid col-7 mx-auto mt-2" type="submit" onclick="handleCategory(event)">Add category</button>
             </div>
             <div class="list-group mt-5">
                 All categories:

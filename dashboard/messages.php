@@ -46,10 +46,14 @@ include '../include/header.php';
             <ul class="list-group">
                 <?php
                 // Fetch messages
-                $query = 'SELECT * FROM messages WHERE sent_to = :sent_to ORDER BY message_id DESC';
+                isset($_GET['page']) ? $page = $_GET['page'] : $page = 1;
+                $limit = 6;
+                $start = ($page - 1) * $limit;
+                $query = 'SELECT * FROM messages WHERE sent_to = :sent_to ORDER BY message_id DESC LIMIT ' . $start . ', ' . $limit;
                 $stmt = $db->prepare($query);
                 $stmt->bindParam(':sent_to', $_SESSION['admin']);
                 $stmt->execute();
+                $totalPages = ceil($stmt->rowCount() / $limit);
                 echo $stmt->rowCount() == 0 ? '<div class="alert alert-warning">You have no messages.</div>' : '<h3 class="bg-warning text-center">All messages</h3>';
                 $colors = ['dark', 'info', 'secondary', 'success', 'danger', 'primary'];
                 $count = 1;
@@ -62,8 +66,29 @@ include '../include/header.php';
                 }
                 ?>
             </ul>
+
+            <div class="col">
+                <ul class="pagination d-flex justify-content-center mt-5">
+                    <li class="page-item <?= $page - 1 == 0 ? 'disabled' : ''; ?>">
+                        <a class="page-link" href="?page=<?= $page - 1; ?>">Previous</a>
+                    </li>
+                    <?php
+                    for ($i = 1; $i <= $totalPages; $i++) {
+                    ?>
+                        <li class="page-item <?= $page == $i ? 'active' : ''; ?>">
+                            <a class="page-link" href="?page=<?= $i; ?>"><?= $i; ?></a>
+                        </li>
+                    <?php
+                    } ?>
+                    <li class="page-item <?= $page + 1 > $totalPages ? 'disabled' : ''; ?>">
+                        <a class="page-link" href="?page=<?= $page + 1; ?>">Next</a>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
-    <?php
-    include '../include/footer.php';
-    ?>
+</div>
+<?php
+include '../include/footer.php';
+?>

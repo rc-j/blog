@@ -36,7 +36,7 @@ $row = $stmt->fetch();
             </li>
             <ul class="collapse" id="subSidebar">
                 <li><a class="nav-link" href="create.php"><i class="fa-solid fa-pen-to-square me-2"></i>Create new</a></li>
-                <li><a class="nav-link" href="#"><i class="fa-solid fa-table-cells-large me-2"></i>My Posts</a></li>
+                <li><a class="nav-link" href="myPosts.php"><i class="fa-solid fa-table-cells-large me-2"></i>My Posts</a></li>
             </ul>
             <li class="nav-item ms-3">
                 <a class="nav-link" href="messages.php">

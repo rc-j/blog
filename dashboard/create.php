@@ -62,7 +62,9 @@ include '../include/header.php';
         <div class="col-lg-6">
             <form id="createPost">
                 <fieldset>
-                    <legend class="mt-3 mb-3 text-center">Create New Post</legend>
+                    <legend class="mt-3 mb-3 text-center">
+                        Create New Post
+                    </legend>
                     <div class="mb-3">
                         <select class="form-control btn btn-secondary" name="Category">
                             <option style="display:none;" selected value="">* Select category</option>

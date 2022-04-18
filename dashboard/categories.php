@@ -78,6 +78,7 @@ $totalPages = ceil($stmt->rowCount() / $limit);
 
         </div>
     </div>
-    <?php
-    include '../include/footer.php';
-    ?>
+</div>
+<?php
+include '../include/footer.php';
+?>

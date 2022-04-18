@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['admin'])) {
+    header('Location: index.php');
+    exit();
+}
 include '../include/connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -68,11 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo '<div class="alert alert-success">Profile updated successfully.</div>';
         exit();
     }
-}
-
-if (!isset($_SESSION['admin'])) {
-    header('Location: index.php');
-    exit();
 }
 
 include '../include/header.php';
